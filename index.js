@@ -1,8 +1,11 @@
 import fs from "node:fs";
+
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { get, ref, getDatabase } from "firebase/database";
 
-const firebaseConfig = { /** insert config */ };
+import {compInstanceMap as config} from "./config/CompInstances";
+
+const firebaseConfig = config.dev; // change accordingly
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getDatabase(app);
