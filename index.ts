@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { get, ref, getDatabase } from "firebase/database";
 
-import {compInstanceMap as config} from "./config/CompInstances";
+import { compInstanceMap as config } from "./config/CompInstances";
 
 const firebaseConfig = config.dev; // change accordingly
 
@@ -19,8 +19,8 @@ async function getCompetitors() {
   return snapshot.val();
 }
 
-function getEmailList(competitors) {
-  const emails = Object.values(competitors).map((c) => c.email);
+function getEmailList(competitors: any) {
+  const emails = Object.values(competitors).map((c: any) => c.email);
   const unique = new Set();
   emails.forEach((email) => unique.add(email));
   return Array.from(unique);
