@@ -14,7 +14,7 @@ async function getCompetitors() {
   const competitorsRef = ref(db, "competitors");
   const snapshot = await get(competitorsRef);
   if (!snapshot.exists) {
-    throw "no data available"
+    throw "no data available";
   }
   return snapshot.val();
 }
@@ -33,8 +33,19 @@ async function generateEmailList() {
   return;
 }
 
+async function createBackupFile() {
+  const dbRef = ref(db, "/");
+  const snapshot = await get(dbRef);
+  if (!snapshot.exists) {
+    throw "no data available";
+  }
+  fs.writeFileSync("data.json", JSON.stringify(snapshot.exportVal()), "utf-8");
+  return;
+}
+
 async function main() {
-  // generateEmailList();
+  // await generateEmailList();
+  // await createBackupFile();
   process.exit(0);
 }
 
