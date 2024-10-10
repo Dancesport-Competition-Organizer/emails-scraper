@@ -26,26 +26,40 @@ function getEmailList(competitors: any) {
   return Array.from(unique);
 }
 
-async function generateEmailList() {
+async function generateEmailList(filepath: string) {
   const competitors = await getCompetitors();
   const list = getEmailList(competitors);
-  fs.writeFileSync("emails.txt", list.join("\n"), "utf-8");
+  fs.writeFileSync(filepath, list.join("\n"), "utf-8");
   return;
 }
 
-async function createBackupFile() {
+function generateFileName(uid: string): string {
+  const today = new Date();
+
+  // Extract year, month, and day
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const day = String(today.getDate()).padStart(2, '0');
+
+  // Create the filename
+  const filename = `${year}_${month}_${day}_backup_${uid}`;
+
+  return filename;
+}
+
+async function createBackupFile(filepath: string) {
   const dbRef = ref(db, "/");
   const snapshot = await get(dbRef);
   if (!snapshot.exists) {
     throw "no data available";
   }
-  fs.writeFileSync("data.json", JSON.stringify(snapshot.exportVal()), "utf-8");
+  fs.writeFileSync(filepath, JSON.stringify(snapshot.exportVal()), "utf-8");
   return;
 }
 
 async function main() {
-  // await generateEmailList();
-  // await createBackupFile();
+  // await generateEmailList("./emails.txt");
+  await createBackupFile(`./backups/${generateFileName("cmu24")}.json`);
   process.exit(0);
 }
 
