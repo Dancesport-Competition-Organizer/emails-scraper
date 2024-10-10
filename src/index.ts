@@ -5,7 +5,8 @@ import { get, ref, getDatabase } from "firebase/database";
 
 import { compInstanceMap as config } from "../config/CompInstances";
 
-const firebaseConfig = config.dev; // change accordingly
+const key: keyof typeof config = "dev"; // change accordingly
+const firebaseConfig = config[key];
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -59,7 +60,7 @@ async function createBackupFile(filepath: string) {
 
 async function main() {
   // await generateEmailList("./emails.txt");
-  await createBackupFile(`./backups/${generateFileName("cmu24")}.json`);
+  // await createBackupFile(`./backups/${generateFileName(key)}.json`);
   process.exit(0);
 }
 
