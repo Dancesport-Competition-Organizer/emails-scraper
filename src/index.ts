@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { get, ref, getDatabase } from "firebase/database";
 
-import { compInstanceMap as config } from "./config/CompInstances";
+import { compInstanceMap as config } from "../config/CompInstances";
 
 const firebaseConfig = config.dev; // change accordingly
 
@@ -26,10 +26,15 @@ function getEmailList(competitors: any) {
   return Array.from(unique);
 }
 
-async function main() {
+async function generateEmailList() {
   const competitors = await getCompetitors();
   const list = getEmailList(competitors);
   fs.writeFileSync("emails.txt", list.join("\n"), "utf-8");
+  return;
+}
+
+async function main() {
+  // generateEmailList();
   process.exit(0);
 }
 
